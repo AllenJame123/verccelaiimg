@@ -2,12 +2,12 @@
 const HeaderSection = () => {
   return (
     <div className="text-center space-y-3 mb-8">
-      <h1 className="text-4xl font-bold tracking-tight">Free Logo Generator - Create Logo Without Design Skills</h1>
+      <h1 className="text-4xl font-bold tracking-tight">Free AI Logo Generator - Create Logo Without Design Skills</h1>
       <p className="text-xl text-muted-foreground">
         AI logo generator that creates high resolution logos instantly. No watermark, completely free. Our online logo creator makes professional logos in seconds.
       </p>
       <p className="text-base text-muted-foreground">
-        Advanced AI creates unique logos. Our logo maker free tool generates professional designs for your business or project.
+        From concept to creation: AI delivers eye-catching logos for every business, instantly.
       </p>
       
       {/* Add schema.org structured data for logo generator */}

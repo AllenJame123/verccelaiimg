@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 const WhyChooseSection = () => {
   return (
     <section className="max-w-3xl mx-auto py-16">
-      <h2 className="text-2xl font-bold text-center mb-8">Why Choose Our Logo Creator?</h2>
+      <h2 className="text-2xl font-bold text-center mb-8">Why Choose Our <span>AI Logo Generator</span>?</h2>
       <div className="space-y-4">
         <Card className="group p-6 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-gray-50 hover:bg-gradient-to-br hover:from-primary-gradient-from/5 hover:to-primary-gradient-to/5">
           <div className="flex items-start space-x-4">
