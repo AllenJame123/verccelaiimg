@@ -4,13 +4,13 @@ import TextStyleControls from "./TextStyleControls";
 
 const Editor = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvas, setCanvas] = useState<any>(null); // fabric.Canvas | null
+  const [canvas, setCanvas] = useState<unknown>(null); // fabric.Canvas | null
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    let fabricInstance: any;
-    let fabricCanvas: any;
+    let fabricInstance: unknown;
+    let fabricCanvas: unknown;
     if (!canvasRef.current) return;
 
     import('fabric').then(({ fabric }) => {
