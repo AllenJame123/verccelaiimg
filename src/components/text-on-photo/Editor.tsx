@@ -7,15 +7,15 @@ const Editor = () => {
   const [canvas, setCanvas] = useState<import("fabric").fabric.Canvas | null>(null);
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const fabricInstanceRef = useRef<typeof import("fabric")['fabric'] | null>(null);
 
   useEffect(() => {
-    let fabricInstance: typeof import("fabric")['fabric'];
     let fabricCanvas: import("fabric").fabric.Canvas;
     if (!canvasRef.current) return;
 
     import('fabric').then(({ fabric }) => {
-      fabricInstance = fabric;
-      fabricCanvas = new fabricInstance.Canvas(canvasRef.current, {
+      fabricInstanceRef.current = fabric;
+      fabricCanvas = new fabric.Canvas(canvasRef.current, {
         width: 800,
         height: 500,
         preserveObjectStacking: true
@@ -34,7 +34,7 @@ const Editor = () => {
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!canvas || !event.target.files?.[0]) return;
+    if (!canvas || !event.target.files?.[0] || !fabricInstanceRef.current) return;
 
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -42,7 +42,7 @@ const Editor = () => {
     reader.onload = (e) => {
       if (!e.target?.result) return;
 
-      fabricInstance.Image.fromURL(e.target.result.toString(), (img) => {
+      fabricInstanceRef.current!.Image.fromURL(e.target.result.toString(), (img) => {
         img.set({
           selectable: false,
         });
@@ -58,14 +58,14 @@ const Editor = () => {
   };
 
   const addText = () => {
-    if (!canvas) return;
+    if (!canvas || !fabricInstanceRef.current) return;
 
     const text = (document.getElementById('textInput') as HTMLInputElement)?.value;
     const font = (document.getElementById('fontSelect') as HTMLSelectElement)?.value;
     const size = parseInt((document.getElementById('fontSize') as HTMLInputElement)?.value || "20", 10);
     const color = (document.getElementById('fontColor') as HTMLInputElement)?.value;
 
-    const textBox = new fabricInstance.Textbox(text, {
+    const textBox = new fabricInstanceRef.current.Textbox(text, {
       left: 100,
       top: 100,
       fontFamily: font,
@@ -80,9 +80,9 @@ const Editor = () => {
   };
 
   const toggleStyle = (style: 'bold' | 'italic' | 'underline') => {
-    if (!canvas) return;
+    if (!canvas || !fabricInstanceRef.current) return;
 
-    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstance.Textbox>;
+    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstanceRef.current.Textbox>;
     if (!activeObject || activeObject.type !== 'textbox') return;
 
     switch (style) {
@@ -131,7 +131,7 @@ const Editor = () => {
 
   const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (!canvas) return;
-    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstance.Textbox>;
+    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstanceRef.current.Textbox>;
     if (activeObject && activeObject.type === 'textbox') {
       activeObject.set('fontFamily', event.target.value);
       canvas.renderAll();
@@ -141,7 +141,7 @@ const Editor = () => {
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!canvas) return;
-    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstance.Textbox>;
+    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstanceRef.current.Textbox>;
     if (activeObject && activeObject.type === 'textbox') {
       activeObject.set('fontSize', parseInt(event.target.value || "20", 10));
       canvas.renderAll();
