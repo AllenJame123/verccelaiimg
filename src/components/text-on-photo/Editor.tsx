@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
+import type { fabric } from "fabric";
 import { Button } from "@/components/ui/button";
 import TextStyleControls from "./TextStyleControls";
 
 const Editor = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvas, setCanvas] = useState<unknown>(null); // fabric.Canvas | null
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    let fabricInstance: unknown;
-    let fabricCanvas: unknown;
+    let fabricInstance: typeof fabric;
+    let fabricCanvas: fabric.Canvas;
     if (!canvasRef.current) return;
 
     import('fabric').then(({ fabric }) => {
