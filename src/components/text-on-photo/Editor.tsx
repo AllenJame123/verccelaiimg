@@ -42,7 +42,7 @@ const Editor = () => {
     reader.onload = (e) => {
       if (!e.target?.result) return;
 
-      fabric.Image.fromURL(e.target.result.toString(), (img) => {
+      fabricInstance.Image.fromURL(e.target.result.toString(), (img) => {
         img.set({
           selectable: false,
         });
@@ -65,7 +65,7 @@ const Editor = () => {
     const size = parseInt((document.getElementById('fontSize') as HTMLInputElement)?.value || "20", 10);
     const color = (document.getElementById('fontColor') as HTMLInputElement)?.value;
 
-    const textBox = new fabric.Textbox(text, {
+    const textBox = new fabricInstance.Textbox(text, {
       left: 100,
       top: 100,
       fontFamily: font,
@@ -82,7 +82,7 @@ const Editor = () => {
   const toggleStyle = (style: 'bold' | 'italic' | 'underline') => {
     if (!canvas) return;
 
-    const activeObject = canvas.getActiveObject() as fabric.Textbox;
+    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstance.Textbox>;
     if (!activeObject || activeObject.type !== 'textbox') return;
 
     switch (style) {
@@ -131,7 +131,7 @@ const Editor = () => {
 
   const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (!canvas) return;
-    const activeObject = canvas.getActiveObject() as fabric.Textbox;
+    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstance.Textbox>;
     if (activeObject && activeObject.type === 'textbox') {
       activeObject.set('fontFamily', event.target.value);
       canvas.renderAll();
@@ -141,7 +141,7 @@ const Editor = () => {
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!canvas) return;
-    const activeObject = canvas.getActiveObject() as fabric.Textbox;
+    const activeObject = canvas.getActiveObject() as InstanceType<typeof fabricInstance.Textbox>;
     if (activeObject && activeObject.type === 'textbox') {
       activeObject.set('fontSize', parseInt(event.target.value || "20", 10));
       canvas.renderAll();
